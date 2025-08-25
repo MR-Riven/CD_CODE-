@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Code Soft UI — CSS Component Library (Dark)</title>
+  <style>
+    /* =============================
+       Code Soft UI — CSS-Only Kit
+       Fokus: zamonaviy CSS (Grid, Flex, clamp, var, :is, :where, @media)
+       Hech qanday JS shartsiz ishlaydi (faqat 1-2 joyda opsional). 
+       ============================= */
+
+    /* 1) CSS Root Design Tokens */
+    :root {
+      --bg: #0b0f1a;
+      --bg-soft: #0f1524;
+      --surface: #121a2b;
+      --surface-2: #162034;
+      --text: #e6edf6;
+      --muted: #9fb0c6;
+      --primary: #7c9cff;
+      --primary-2: #4b79ff;
+      --accent: #2ee6a6;
+      --danger: #ff647c;
+      --warning: #ffd166;
+      --radius: 16px;
+      --shadow: 0 10px 30px rgba(0,0,0,.35);
+      --shadow-soft: 0 6px 18px rgba(0,0,0,.25);
+      --maxw: 1200px;
+      --grid-gap: clamp(12px, 2.2vw, 24px);
+      --pad: clamp(14px, 2vw, 20px);
+    }
+
+    /* 2) Reset/Base */
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, "Helvetica Neue", Arial;
+      color: var(--text);
+      background: radial-gradient(1200px 800px at 80% -20%, #1b2440 0%, transparent 60%),
+                  radial-gradient(900px 600px at -20% 0%, #0e1630 0%, transparent 60%),
+                  var(--bg);
+      line-height: 1.6;
+    }
+    a { color: inherit; text-decoration: none; }
+    img { max-width: 100%; display: block; }
+
+    /* Utility classes */
+    .container { width: min(100% - 32px, var(--maxw)); margin-inline: auto; }
+    .grid { display: grid; gap: var(--grid-gap); }
+    .flex { display: flex; gap: var(--grid-gap); }
+    .center { display: grid; place-items: center; }
+    .pill { border-radius: 999px; padding: 8px 14px; }
+    .btn { padding: 10px 16px; border-radius: 10px; background: var(--primary);
+           color:#08111f; font-weight: 700; box-shadow: var(--shadow-soft); border: 1px solid #6c8dff44; }
+    .btn:is(:hover, :focus-visible) { filter: brightness(1.08); transform: translateY(-1px); }
+    .card { background: linear-gradient(180deg, #141d33 0%, #0f1628 100%);
+            border: 1px solid #1d2a49; border-radius: var(--radius); box-shadow: var(--shadow); }
+    .muted { color: var(--muted); }
+
+    /* 3) Header/Navbar */
+    header.site {
+      position: sticky; top: 0; z-index: 50;
+      backdrop-filter: saturate(120%) blur(10px);
+      background: linear-gradient(180deg, rgba(10,14,24,.85), rgba(10,14,24,.45));
+      border-bottom: 1px solid #1a2340;
+    }
+    .nav { display:flex; align-items:center; justify-content: space-between; padding: 12px 0; }
+    .logo { font-weight:800; letter-spacing:.3px; }
+    .logo b { color: var(--primary); }
+    .nav-links { display:flex; gap:14px; align-items:center; }
+    .nav-links a { padding:8px 12px; border-radius:10px; color: var(--muted);} 
+    .nav-links a:hover { background:#101a31; color: var(--text); }
+
+    /* 4) Hero */
+    .hero { padding: clamp(36px, 8vw, 96px) 0; }
+    .hero-grid { grid-template-columns: 1.2fr 1fr; align-items: center; }
+    .hero .kicker { color: var(--accent); font-weight: 700; letter-spacing: .8px; }
+    .hero h1 { font-size: clamp(28px, 6vw, 56px); line-height:1.1; margin: 10px 0 16px; }
+    .hero p { color: var(--muted); font-size: clamp(14px, 2.2vw, 18px); }
+
+    .hero .cta { display:flex; gap:12px; margin-top: 18px; }
+    .btn-ghost { border:1px solid #2a3a60; background: #0f1729; color: var(--text); }
+    .btn-ghost:hover { border-color:#3b5aa2; }
+
+    .hero .demo-card {
+      aspect-ratio: 16/10; border-radius: var(--radius); overflow:hidden; position: relative;
+      background: radial-gradient(600px 300px at 100% 0%, #20325a, transparent 60%), var(--surface);
+      border: 1px solid #20325a; box-shadow: var(--shadow);
+      padding: 14px; display:grid; grid-template-rows: auto 1fr;
+    }
+    .statusbar { display:flex; gap:10px; align-items:center; }
+    .dot { width:10px; height:10px; border-radius:50%; background:#ff5f56; box-shadow: 16px 0 0 #ffbd2e, 32px 0 0 #27c93f; }
+
+    /* 5) Components Showcase */
+    section.components { padding: 56px 0; }
+    .comp-grid { grid-template-columns: repeat(12, 1fr); }
+    .comp-grid > * { grid-column: span 4; }
+    .tile { padding: var(--pad); }
+
+    /* Buttons demo */
+    .btn-row { display:flex; flex-wrap: wrap; gap:12px; }
+    .btn.secondary { background: var(--accent); color:#08111f; border-color:#2bd39a; }
+    .btn.warn { background: var(--warning); color:#333; border-color:#e8bf59; }
+    .btn.danger { background: var(--danger); color:#fff; border-color:#e75268; }
+
+    /* Card demo */
+    .product { display:grid; grid-template-columns: 1fr auto; gap:10px; }
+    .badge { font-size:12px; background:#142243; color:#9fc0ff; border:1px solid #1f3566; padding:4px 8px; border-radius:999px; }
+
+    /* Tooltip demo (CSS-only) */
+    .tip { position: relative; border-bottom:1px dashed #2b3b66; cursor: help; }
+    .tip:hover .tipbox { opacity:1; transform: translateY(0); }
+    .tipbox { position:absolute; left:0; top:110%; background:#0f1729; border:1px solid #22335c; border-radius:10px; padding:8px 10px; white-space: nowrap; opacity:0; transform: translateY(-6px); transition:.2s ease; }
+
+    /* Accordion (details/summary) */
+    details.ac { background:#0e1526; border:1px solid #1a2b52; border-radius:12px; padding: 8px 12px; }
+    details.ac[open] { border-color:#2e4c98; }
+    details.ac summary { cursor: pointer; list-style:none; }
+    details.ac summary::marker, details.ac summary::-webkit-details-marker{ display:none; }
+
+    /* Modal (CSS-only with :target) */
+    .modal-link { color: var(--primary); text-decoration: underline; }
+    .modal { position: fixed; inset: 0; display: grid; place-items: center; background: rgba(0,0,0,.6); opacity: 0; pointer-events: none; transition: .25s; }
+    .modal:target { opacity: 1; pointer-events: auto; }
+    .modal > div { width: min(560px, 92vw); background:#0f1729; border:1px solid #2a3f72; border-radius:16px; padding: 18px; box-shadow: var(--shadow); }
+
+    /* 6) Layouts demo */
+    section.layouts { padding: 56px 0; }
+    .layout-grid { grid-template-columns: 2fr 1fr; }
+    .sidebar { padding: var(--pad); }
+    .post { padding: var(--pad); }
+
+    /* 7) Pricing cards */
+    .pricing { padding: 56px 0; }
+    .pricing .grid { grid-template-columns: repeat(3, 1fr); }
+    .pricing .plan { padding: var(--pad); text-align: center; }
+    .plan h3 { margin: 6px 0 8px; font-size: 20px; }
+    .plan .price { font-size: clamp(22px, 4vw, 32px); font-weight: 800; }
+    .plan .features { text-align: left; font-size: 14px; margin-top: 10px; color: var(--muted); }
+    .plan.highlight { outline: 2px solid #375fe6; transform: translateY(-4px); }
+
+    /* 8) Footer */
+    footer { padding: 36px 0; color: var(--muted); border-top:1px solid #1a2340; }
+
+    /* 9) Responsive */
+    @media (max-width: 980px) {
+      .hero-grid { grid-template-columns: 1fr; }
+      .comp-grid > * { grid-column: span 6; }
+      .pricing .grid { grid-template-columns: 1fr; }
+      .layout-grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 640px) {
+      .comp-grid > * { grid-column: span 12; }
+    }
+
+    /* 10) Micro animations */
+    @keyframes floaty { from { transform: translateY(0); } 50% { transform: translateY(-6px);} to { transform: translateY(0);} }
+    .floaty { animation: floaty 5s ease-in-out infinite; }
+  </style>
+</head>
+<body>
+  <!-- Header / Navbar -->
+  <header class="site">
+    <div class="container nav">
+      <div class="logo">Code <b>Soft</b> UI</div>
+      <nav class="nav-links">
+        <a href="#components">Komponentlar</a>
+        <a href="#layouts">Layoutlar</a>
+        <a href="#pricing">Pricing</a>
+        <a class="btn" href="#modal-demo">Demo olish</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="container grid hero-grid">
+      <div>
+        <div class="kicker">CSS Mastery — Dark Theme</div>
+        <h1>Frontend uchun <span style="color:var(--primary)">CSS Component Library</span></h1>
+        <p>Toza CSS bilan qurilgan UI kutubxonasi: tugmalar, kartalar, tooltip, modal, accordion, grid layoutlar, pricing va boshqalar. Kodni o‘rganish uchun izohlar qo‘shilgan.</p>
+        <div class="cta">
+          <a class="btn" href="#components">Kutubxonani ko‘rish</a>
+          <a class="btn btn-ghost" href="#layouts">Layout namunalari</a>
+        </div>
+      </div>
+      <div>
+        <div class="demo-card floaty card">
+          <div class="statusbar"><span class="dot"></span><span class="muted">/index.html</span></div>
+          <div class="grid" style="grid-template-columns: repeat(3,1fr); gap:10px; align-content:start;">
+            <div class="card" style="height:120px; padding:10px;"></div>
+            <div class="card" style="height:120px; padding:10px;"></div>
+            <div class="card" style="height:120px; padding:10px;"></div>
+            <div class="card" style="height:60px;"></div>
+            <div class="card" style="height:60px;"></div>
+            <div class="card" style="height:60px;"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Components -->
+  <section id="components" class="components">
+    <div class="container">
+      <h2>🧩 Komponentlar</h2>
+      <p class="muted">Quyidagi bloklar 100% CSS bilan ishlaydi. Kodni tahrirlab, o‘zingizga moslang.</p>
+
+      <div class="grid comp-grid">
+        <!-- Buttons -->
+        <article class="card tile">
+          <h3>Tugmalar</h3>
+          <div class="btn-row">
+            <button class="btn">Primary</button>
+            <button class="btn secondary">Success</button>
+            <button class="btn warn">Warning</button>
+            <button class="btn danger">Danger</button>
+          </div>
+          <p class="muted" style="margin-top:8px">Hover, focus va active holatlariga e'tibor bering.</p>
+        </article>
+
+        <!-- Card + Badge -->
+        <article class="card tile">
+          <h3>Karta + Badge</h3>
+          <div class="product">
+            <div>
+              <div class="badge">Yangi</div>
+              <h4>Dark UI Starter</h4>
+              <p class="muted">Soddaligi va kuchli dizayni bilan boshlang.</p>
+            </div>
+            <div><button class="btn">Yuklab olish</button></div>
+          </div>
+        </article>
+
+        <!-- Tooltip -->
+        <article class="card tile">
+          <h3>Tooltip (CSS-only)</h3>
+          <p>Matnda <span class="tip">hover qiling
+            <span class="tipbox">Bu tooltip — faqat CSS bilan.</span></span> va ko‘ring.</p>
+        </article>
+
+        <!-- Accordion -->
+        <article class="card tile">
+          <h3>Accordion (details/summary)</h3>
+          <details class="ac">
+            <summary><b>Qanday ishlaydi?</b></summary>
+            <div class="muted">Native <code>&lt;details&gt;</code> elementi orqali ochilib-yopiladi – JS kerak emas.</div>
+          </details>
+        </article>
+
+        <!-- Modal -->
+        <article class="card tile">
+          <h3>Modal (CSS :target)</h3>
+          <p><a class="modal-link" href="#modal-demo">Modallarni och</a> va keyin tashqariga bosing yoki <a href="#">yopish</a>.</p>
+        </article>
+
+        <!-- Grid showcase -->
+        <article class="card tile">
+          <h3>Responsive Grid</h3>
+          <div class="grid" style="grid-template-columns: repeat(6, 1fr); gap:10px">
+            <div class="card" style="grid-column: span 4; height:70px"></div>
+            <div class="card" style="grid-column: span 2; height:70px"></div>
+            <div class="card" style="grid-column: span 3; height:70px"></div>
+            <div class="card" style="grid-column: span 3; height:70px"></div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- Layouts -->
+  <section id="layouts" class="layouts">
+    <div class="container">
+      <h2>🧭 Layout Namunalari</h2>
+      <div class="grid layout-grid">
+        <aside class="card sidebar">
+          <h3>Sidebar</h3>
+          <ul class="muted" style="padding-left:18px">
+            <li>Profil</li>
+            <li>Bildirishnomalar</li>
+            <li>API kalitlari</li>
+            <li>Billing</li>
+          </ul>
+        </aside>
+        <article class="card post">
+          <h3>Kontent</h3>
+          <p class="muted">Bu joyda blog posti yoki hujjat bo‘lishi mumkin. Sarlavhalar, p listlar, kod bloklar – hammasi dark UI uchun moslangan.</p>
+          <p class="muted">Typography: <code>clamp()</code> bilan responsiv o‘lchamlar, <code>var()</code> tokenlar orqali tematik ranglar.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pricing -->
+  <section id="pricing" class="pricing">
+    <div class="container">
+      <h2>💎 Pricing Kartalari</h2>
+      <div class="grid">
+        <div class="card plan">
+          <div class="pill" style="background:#101a31; display:inline-block;">Starter</div>
+          <h3>Havaskorlar uchun</h3>
+          <div class="price">$0</div>
+          <div class="features">
+            <p>— 10 ta komponent</p>
+            <p>— Bitta layout</p>
+            <p>— Basic qo‘llab-quvvatlash</p>
+          </div>
+        </div>
+        <div class="card plan highlight">
+          <div class="pill" style="background:#0d233f; display:inline-block; border:1px solid #3a5edb">Pro</div>
+          <h3>Freelancerlar uchun</h3>
+          <div class="price">$19</div>
+          <div class="features">
+            <p>— 25 ta komponent</p>
+            <p>— 3 ta layout</p>
+            <p>— Ustuvor qo‘llab-quvvatlash</p>
+          </div>
+        </div>
+        <div class="card plan">
+          <div class="pill" style="background:#101a31; display:inline-block;">Team</div>
+          <h3>Jamoalar uchun</h3>
+          <div class="price">$49</div>
+          <div class="features">
+            <p>— 50+ komponent</p>
+            <p>— 6+ layout</p>
+            <p>— Design tokens & docs</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Modal target -->
+  <div id="modal-demo" class="modal">
+    <div>
+      <h3>CSS-Only Modal</h3>
+      <p class="muted">Bu modal <code>:target</code> selektori orqali ochildi. Hech qanday JavaScript yo‘q.</p>
+      <p><a class="btn" href="#">Yopish</a></p>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container flex" style="justify-content: space-between; align-items:center; flex-wrap:wrap">
+      <div class="muted">© 2025 Code Soft UI — Dark Theme</div>
+      <div class="muted">CSS Tokens • Grid • Flex • Animations • instagram-(ur olimov) • Telegram-(I`m Olimov)</div>
+    </div>
+  </footer>
+</body>
+</html>
